@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using EmailCollector.Models;
 
 namespace EmailCollector
 {
@@ -22,6 +24,10 @@ namespace EmailCollector
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddDbContext<EmailCollectorContext>(options =>
+                    options.UseMySql(Configuration.GetConnectionString("EmailCollectorContext")));
+            services.Configure<EmailFetcherOptions>(Configuration.GetSection("EmailFetcher"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,6 +37,7 @@ namespace EmailCollector
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {

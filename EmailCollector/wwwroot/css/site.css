@@ -33,3 +33,7 @@ body {
         display: none;
     }
 }
+
+.hash {
+    font-family: monospace
+}
